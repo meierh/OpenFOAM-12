@@ -1360,6 +1360,7 @@ Foam::fvMeshTopoChangers::refiner::~refiner()
 bool Foam::fvMeshTopoChangers::refiner::update()
 {
     // Only refine on the first call in a time-step
+    /*
     if (timeIndex_ != mesh().time().timeIndex())
     {
         timeIndex_ = mesh().time().timeIndex();
@@ -1368,6 +1369,7 @@ bool Foam::fvMeshTopoChangers::refiner::update()
     {
         return false;
     }
+    */
 
     bool hasChanged = false;
 
