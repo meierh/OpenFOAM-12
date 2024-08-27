@@ -1011,9 +1011,9 @@ Foam::labelList Foam::fvMeshTopoChangers::refiner::selectUnrefinePoints
 
     DynamicList<label> newSplitPoints(splitPoints.size());
 
-    const word fieldName(refineDict.lookup("field"));
+    const word fieldName(dict_.lookup("field"));
     const volScalarField& vFld = mesh().lookupObject<volScalarField>(fieldName);
-    const scalar unrefineLevel = refineDict.lookup<scalar>("lowerRefineLevel");
+    const scalar unrefineLevel = dict_.lookup<scalar>("unrefineLevel");
 
     forAll(splitPoints, i)
     {
