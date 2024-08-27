@@ -1011,6 +1011,10 @@ Foam::labelList Foam::fvMeshTopoChangers::refiner::selectUnrefinePoints
 
     DynamicList<label> newSplitPoints(splitPoints.size());
 
+    const word fieldName(refineDict.lookup("field"));
+    const volScalarField& vFld = mesh().lookupObject<volScalarField>(fieldName);
+    const scalar unrefineLevel = refineDict.lookup<scalar>("lowerRefineLevel");
+
     forAll(splitPoints, i)
     {
         const label pointi = splitPoints[i];
@@ -1029,7 +1033,19 @@ Foam::labelList Foam::fvMeshTopoChangers::refiner::selectUnrefinePoints
             }
         }
 
-        if (!hasMarked)
+        //Check that all cells are at unrefine level
+        bool hasUnrefineLevel = true;
+
+        forAll(pCells, pCelli)
+        {
+            if (vFld[pCelli]>=unrefineLevel)
+            {
+                hasUnrefineLevel = false;
+                break;
+            }
+        }
+
+        if (!hasMarked && hasUnrefineLevel)
         {
             newSplitPoints.append(pointi);
         }
