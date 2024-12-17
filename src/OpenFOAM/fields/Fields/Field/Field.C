@@ -667,7 +667,7 @@ void Foam::writeEntry(Ostream& os, const Field<Type>& f)
 {
     bool uniform = false;
 
-    if (f.size() && contiguous<Type>())
+    if (f.size()>0 && contiguous<Type>())
     {
         uniform = true;
 
@@ -683,6 +683,11 @@ void Foam::writeEntry(Ostream& os, const Field<Type>& f)
 
     if (uniform)
     {
+        if(f.size()==0)
+        {
+            Pout<<"uniform:"<<uniform<<Foam::endl;
+            FatalErrorInFunction<<"Zero elements in f of name:"<<os.name()<<exit(FatalError);
+        }
         os << "uniform " << f[0];
     }
     else
