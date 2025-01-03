@@ -569,7 +569,7 @@ void Foam::fvMeshTopoChangers::refiner::refineUfs
         surfaceVectorField& Uf = Ufs[i];
 
         const word Uname(this->Uname(Uf));
-
+        
         if (Uname != word::null)
         {
             const surfaceVectorField UfU
@@ -593,7 +593,7 @@ void Foam::fvMeshTopoChangers::refiner::refineUfs
                     Uf[facei] = UfU[facei];
                 }
             }
-
+            
             // Recalculate new boundary faces.
             surfaceVectorField::Boundary& UfBf = Uf.boundaryFieldRef();
             forAll(UfBf, patchi)
@@ -627,6 +627,7 @@ void Foam::fvMeshTopoChangers::refiner::refineUfs
             forAllConstIter(labelHashSet, masterFaces, iter)
             {
                 label facei = iter.key();
+                
 
                 if (mesh().isInternalFace(facei))
                 {
@@ -636,6 +637,7 @@ void Foam::fvMeshTopoChangers::refiner::refineUfs
                 {
                     const label patchi =
                         mesh().boundaryMesh().whichPatch(facei);
+                        
                     const label i =
                         facei - mesh().boundaryMesh()[patchi].start();
 
@@ -644,7 +646,8 @@ void Foam::fvMeshTopoChangers::refiner::refineUfs
 
                     fvsPatchVectorField& patchUf = UfBf[patchi];
 
-                    patchUf[i] = patchUfU[i];
+                    if(i>=0 && i<patchUf.size())
+                        patchUf[i] = patchUfU[i];
                 }
             }
         }
@@ -1386,7 +1389,7 @@ bool Foam::fvMeshTopoChangers::refiner::update()
         return false;
     }
     */
-
+    
     bool hasChanged = false;
 
     if (refineInterval_ == 0)
